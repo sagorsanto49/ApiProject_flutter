@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_12/models/post_model.dart';
 import 'package:flutter_application_12/services/api_services.dart';
-import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,21 +11,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  List<PostModel> posts = [];
-
-
-  @override
-  void initState() {
-    super.initState();
-    fetchData();
-  }
-  fetchData () async {
-    final data = await ApiServices.fetchData();
-
-    setState(() {
-      posts = data;
-    });
-  }
+  // List<PostModel> posts = [];
 
   @override
   Widget build(BuildContext context) {
@@ -36,53 +19,79 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Home Page'),
       ),
-      body: ListView.builder(
-        itemCount: posts.length,
+      body: FutureBuilder(
+        future: ApiServices.fetchData(),
+        builder: (context, snapshot) {
 
-        itemBuilder: (_, index) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-          final data = posts[index];
-
-          return Card(
-            margin: const EdgeInsets.all(10),
-            child: ListTile(
-              leading: CircleAvatar(
-                child: Text(
-                  data.id.toString(),
-                ),
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
               ),
+            );
+          }
 
-              title: Text(
-                data.title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+          if (snapshot.hasData) {
+            posts = snapshot.data!;
 
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            return ListView.builder(
+              itemCount: posts.length,
 
-                  const SizedBox(height: 8),
+              itemBuilder: (_, index) {
 
-                  Text(
-                    data.body,
-                  ),
+                final data = posts[index];
 
-                  const SizedBox(height: 8),
+                return Card(
+                  margin: const EdgeInsets.all(10),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      child: Text(
+                        data.id.toString(),
+                      ),
+                    ),
 
-                  Text(
-                    'User ID: ${data.userid}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
+                    title: Text(
+                      data.title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        const SizedBox(height: 8),
+
+                        Text(
+                          data.body,
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        Text(
+                          'User ID: ${data.userid}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                      ],
                     ),
                   ),
+                );
 
-                ],
-              ),
-            ),
-          );
+              },
+            );
+          }
 
+          return const SizedBox();
         },
       ),
     );
