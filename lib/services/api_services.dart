@@ -39,6 +39,7 @@ final response = await http.get(Uri.parse('${ApiEndpoints.singlePost}/$id'));
 
 if (response.statusCode == 200){
   final decode = jsonDecode(response.body);
+  return PostDetailsModel.fromJson(decode);
 
 }else{
   print('Error is ${response.body}');
