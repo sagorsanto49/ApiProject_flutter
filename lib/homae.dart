@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_12/models/post_model.dart';
+import 'package:flutter_application_12/post_details/post_details.dart';
 import 'package:flutter_application_12/services/api_services.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,7 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  // List<PostModel> posts = [];
+  List<PostModel> posts = [];
 
   @override
   Widget build(BuildContext context) {
@@ -47,42 +48,50 @@ class _HomePageState extends State<HomePage> {
 
                 final data = posts[index];
 
-                return Card(
-                  margin: const EdgeInsets.all(10),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      child: Text(
-                        data.id.toString(),
-                      ),
-                    ),
+                return InkWell(
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_)=> PostDetails(
+                    postId: data.id.toString(),
 
-                    title: Text(
-                      data.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
 
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
 
-                        const SizedBox(height: 8),
-
-                        Text(
-                          data.body,
+                  ))),
+                  child: Card(
+                    margin: const EdgeInsets.all(10),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        child: Text(
+                          data.id.toString(),
                         ),
-
-                        const SizedBox(height: 8),
-
-                        Text(
-                          'User ID: ${data.userid}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
+                      ),
+                  
+                      title: Text(
+                        data.title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                  
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                  
+                          const SizedBox(height: 8),
+                  
+                          Text(
+                            data.body,
                           ),
-                        ),
-
-                      ],
+                  
+                          const SizedBox(height: 8),
+                  
+                          Text(
+                            'User ID: ${data.userid}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                  
+                        ],
+                      ),
                     ),
                   ),
                 );

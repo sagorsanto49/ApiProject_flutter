@@ -11,7 +11,11 @@ class PostModel {
       required this.userid,
     });
     factory PostModel.fromJson(Map<String, dynamic>json ){
-      return PostModel(id: json['id'], title:json['title'], body: json['body'], userid: json['userId']);
+      return PostModel(
+        id: json['id'],
+         title:json['title'],
+        body: json['body'],
+         userid: json['userId']);
 
     }
 
