@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_12/models/post_model.dart';
 import 'package:flutter_application_12/post_details/post_details.dart';
 import 'package:flutter_application_12/services/api_services.dart';
+import 'package:flutter_application_12/utils/post_creat.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -103,6 +104,10 @@ class _HomePageState extends State<HomePage> {
           return const SizedBox();
         },
       ),
+    floatingActionButton: FloatingActionButton(onPressed: (){
+      Navigator.push(context, MaterialPageRoute(builder: (_)=> PostCreat()));
+    },child:  Icon(Icons.add),),
+    
     );
   }
 }
