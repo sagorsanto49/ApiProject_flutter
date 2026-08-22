@@ -7,9 +7,8 @@ import 'package:http/http.dart' as http;
 
 class ApiServices {
 
-  static Future<List<PostModel>> fetchData() async { 
+  static Future<List<PostModel>> fetchData() async {
 
-  
     // final url = Uri.parse('https://jsonplaceholder.typicode.com/posts');
 
     final response = await http.get(ApiEndpoints.allposts);
@@ -31,20 +30,19 @@ class ApiServices {
   }
 
 
+  static Future<PostDetailsModel?> getSinglePost(String id) async {
 
-static Future<PostDetailsModel?>  getSinglePost (String id) async{
+    final response =
+        await http.get(Uri.parse('${ApiEndpoints.singlePost}/$id'));
 
+    if (response.statusCode == 200) {
+      final decoded = jsonDecode(response.body);
 
-final response = await http.get(Uri.parse('${ApiEndpoints.singlePost}/$id'));
+      return PostDetailsModel.fromJson(decoded);
 
-if (response.statusCode == 200){
-  final decode = jsonDecode(response.body);
-  return PostDetailsModel.fromJson(decode);
-
-}else{
-  print('Error is ${response.body}');
-}
-
-
-}
+    } else {
+      print('Error is ${response.body}');
+      return null;
+    }
+  }
 }
