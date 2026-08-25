@@ -6,6 +6,6 @@ class ApiEndpoints {
 
   static Uri allposts = Uri.parse('$apiUrl/posts');
 
-  static String singlePost = '$apiUrl/posts';
+  static String posts = '$apiUrl/posts';
 
 }

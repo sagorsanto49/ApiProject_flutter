@@ -33,7 +33,7 @@ class ApiServices {
   static Future<PostDetailsModel?> getSinglePost(String id) async {
 
     final response =
-        await http.get(Uri.parse('${ApiEndpoints.singlePost}/$id'));
+        await http.get(Uri.parse('${ApiEndpoints.posts}/$id'));
 
     if (response.statusCode == 200) {
       final decoded = jsonDecode(response.body);
@@ -45,4 +45,32 @@ class ApiServices {
       return null;
     }
   }
+
+
+static Future createPost(
+  String title,
+  String description,
+) async {
+  final response = await http.post(
+    Uri.parse(ApiEndpoints.posts),
+
+    body: {
+      'title': title,
+      'description': description,
+    },
+
+    headers: {
+      'Accept': 'application/json',
+    },
+  );
+
+  if (response.statusCode == 201) {
+    print('Post Created');
+    print(response.body);
+  } else {
+    print('Post Create Failed ${response.body}');
+  }
+}
+
+
 }
